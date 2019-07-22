@@ -1,0 +1,62 @@
+{
+  "name": "vue-cli-ssr-example",
+  "version": "0.1.0",
+  "private": true,
+  "config": {
+    "functionsDist": "functions/dist",
+    "hostingDist": "functions/dist/app"
+  },
+  "scripts": {
+    "build": "npm run build:client -- --silent && npm run build:server -- --no-clean --silent && npm run build:functions",
+    "build:client": "cross-env WEBPACK_TARGET=client vue-cli-service build --dest functions/dist/app",
+    "build:server": "cross-env WEBPACK_TARGET=node vue-cli-service build --dest  functions/dist/app",
+    "build:functions": "tsc --project ./functions --outDir functions/dist",
+    "deploy": "npm run deploy:hosting && npm run deploy:functions",
+    "deploy:hosting": "firebase deploy --only hosting",
+    "deploy:functions": "firebase deploy --only functions",
+    "serve:pro": "cross-env NODE_ENV=production node scripts/start",
+    "serve:dev": "npm-run-all --parallel --race serve:dev:client serve:dev:server",
+    "serve:dev:client": "cross-env vue-cli-service serve --port 8081",
+    "serve:dev:server": "cross-env NODE_ENV=development node scripts/start",
+    "lint": "vue-cli-service lint",
+    "show": "echo $name && echo $npm_package_version"
+  },
+  "dependencies": {
+    "browserslist": "^4.6.6",
+    "caniuse-lite": "^1.0.30000984",
+    "http-proxy-middleware": "^0.19.1",
+    "register-service-worker": "^1.5.2",
+    "vue": "^2.5.17",
+    "vue-class-component": "^6.0.0",
+    "vue-property-decorator": "^7.0.0",
+    "vue-router": "^3.0.1",
+    "vue-server-renderer": "^2.5.21",
+    "vuex": "^3.0.1",
+    "vuex-router-sync": "^5.0.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.2.0",
+    "@vue/cli-plugin-pwa": "^3.2.0",
+    "@vue/cli-plugin-typescript": "^3.2.0",
+    "@vue/cli-service": "^3.2.0",
+    "cross-env": "^5.2.0",
+    "html-webpack-exclude-assets-plugin": "^0.0.7",
+    "lint-staged": "^7.2.2",
+    "node-sass": "^4.9.0",
+    "npm-run-all": "^4.1.5",
+    "sass-loader": "^7.0.1",
+    "ts-loader": "^6.0.4",
+    "tslint-loader": "^3.5.4",
+    "typescript": "^3.0.0",
+    "vue-template-compiler": "^2.5.17",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "vue-cli-service lint"
+    ],
+    "*.vue": [
+      "vue-cli-service lint"
+    ]
+  }
+}
